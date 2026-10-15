@@ -25,7 +25,7 @@ jobs:
       - name: Validate on Debian 13 amd64
         run: ./scripts/check-docker.sh
       - name: Build ISO on native x86-64
-        run: ./scripts/build-docker.sh
+        run: ./scripts/build-docker.sh --github-hosted
       - name: Keep failed-container diagnostics
         if: failure()
         shell: bash

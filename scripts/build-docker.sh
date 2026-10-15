@@ -1,6 +1,19 @@
 #!/bin/bash
 set -Eeuo pipefail
 ROOT=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
+# Broader mount/device permissions are restricted to disposable hosted runners.
+container_permissions=(--cap-add SYS_ADMIN)
+case ${1:-} in
+    '') ;;
+    --github-hosted)
+        [[ ${GITHUB_ACTIONS:-} == true && ${RUNNER_ENVIRONMENT:-} == github-hosted && $(uname -s) == Linux && $(uname -m) == x86_64 ]] || {
+            echo '--github-hosted 僅限 GitHub 一次性 Linux x64 runner' >&2
+            exit 1
+        }
+        container_permissions=(--privileged)
+        ;;
+    *) echo "未知選項：$1" >&2; exit 1 ;;
+esac
 command -v docker >/dev/null || { echo '找不到 Docker CLI' >&2; exit 1; }
 free_kb=$(df -Pk "$ROOT" | awk 'END {print $4}')
 (( free_kb >= 26214400 )) || { echo '主機至少需要 25 GiB 可用空間' >&2; exit 1; }
@@ -11,9 +24,10 @@ python3 "$ROOT/scripts/lib/docker-health.py"
 docker build --platform linux/amd64 --target check-base -f "$ROOT/tests/docker/Dockerfile" -t jiukong-linux-check-base:debian13-amd64 "$ROOT"
 docker build --platform linux/amd64 -f "$ROOT/tests/docker/Dockerfile.build" -t jiukong-linux-builder:debian13-amd64 "$ROOT"
 name="jiukong-build-$stamp"
-# SYS_ADMIN permits live-build's proc/dev mounts in this container's namespace.
-# No privileged mode, host mounts, host devices or Docker socket are supplied.
-docker create --platform linux/amd64 --cap-add SYS_ADMIN --name "$name" \
+# Default SYS_ADMIN alone may be insufficient under Docker mount restrictions.
+# Hosted mode permits live-build mounts only inside the disposable cloud VM.
+# No host directory or Docker socket is mounted in either mode.
+docker create --platform linux/amd64 "${container_permissions[@]}" --name "$name" \
     jiukong-linux-builder:debian13-amd64
 echo "建置容器：${name}；失敗時保留供除錯。"
 if docker start -a "$name"; then

@@ -8,7 +8,7 @@
 
 ## Docker 後續驗證
 
-操作者後續回報 Mac 幾乎當機，已停止新增本機重負載工作，改準備手動雲端建置流程。嘗試停止本專案建置容器的 Docker stop 命令在 15 秒內未回應，**無法確認容器已停止**；已請操作者正常退出 Docker Desktop。雲端 workflow 僅完成準備及本機語法檢查，尚未推送或執行，沒有雲端 ISO 產物。
+操作者後續回報 Mac 幾乎當機，已停止新增本機重負載工作，改準備手動雲端建置流程。嘗試停止本專案建置容器的 Docker stop 命令在 15 秒內未回應，**無法確認容器已停止**；已請操作者正常退出 Docker Desktop。雲端 workflow 已推送並執行首輪，詳見下節；沒有雲端 ISO 產物。
 
 - 正常重啟 Docker Desktop 逾時後，以 SIGTERM 正常終止殘留程序，再重新開啟，`/_ping` 已回傳 OK。沒有清除映像、資料卷或重設 Docker。
 - 已實際建立並執行 Debian 13 `linux/amd64` 容器：13 項測試、Debian ShellCheck 0.10.0、desktop-file-validate、XML 語法、全部映像套件的 APT 相依模擬、實際 `lb config` 均通過。
@@ -31,7 +31,7 @@
 - benchmark.sh --seconds 1 在主機完成有限 CPU、128 MiB 記憶體複製與暫存檔 I/O。僅驗證測試工具可執行，不作為目標工作站效能數據。
 - build.sh 在 macOS 明確失敗；test-qemu.sh 回報缺少 qemu-system-x86_64；install-all.sh 拒絕非 Linux amd64。三者均未執行安裝／建置或改寫主機系統設定。
 
-本機原始輸出位於未追蹤的 `results/source-checks.log`、`results/host-hardware.json`、`results/host-benchmark.json`。這些不是可發行產物。尚未執行 GitHub Actions，不宣稱 CI 已通過。
+本機原始輸出位於未追蹤的 `results/source-checks.log`、`results/host-hardware.json`、`results/host-benchmark.json`。這些不是可發行產物。雲端來源檢查已執行，完整 ISO 建置尚未通過。
 
 ## 八階段狀態
 
@@ -51,3 +51,7 @@
 A–Q **全部尚未在目標機或 QEMU 驗證**。沒有「模擬成功」或「實測成功」項目。F/G/H/I/J/K 的完整帳號功能需要使用者登入後進行實機測試；CLI --version 與 GUI 起動可先在無帳號環境獨立驗證。
 
 套件相依與 lb config 已在 Debian 13 amd64 容器完成驗證。後續須完成 ISO 建置，對 BIOS、UEFI 各執行 Live→安裝→移除 ISO→重新登入，之後才能評估 RAM、swappiness 與 Intel 實機相容性。
+
+## 首次 GitHub 雲端建置
+
+[Run 38671537652](https://github.com/jiukong-labs/jiukong-linux/actions/runs/38671537652)，commit `e3c52b6`：來源測試、APT 相依模擬、lb config 通過；Debian 基礎系統成功安裝，chroot 階段掛載 devpts／proc 失敗，exit 32。這是建置失敗，artifact 僅為日誌，沒有 ISO。後續將較高掛載權限限制於 GitHub 一次性 VM 的專用參數，等待重新建置驗證；不在 Mac 重新執行 Docker。
