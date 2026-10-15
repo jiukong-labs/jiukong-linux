@@ -1,0 +1,13 @@
+#!/bin/sh
+set -eu
+printf 'zh_TW.UTF-8 UTF-8\nen_US.UTF-8 UTF-8\n' > /etc/locale.gen
+locale-gen
+update-locale LANG=zh_TW.UTF-8
+ln -sf /usr/share/zoneinfo/Asia/Taipei /etc/localtime
+printf 'Asia/Taipei\n' > /etc/timezone
+systemctl enable NetworkManager lightdm nftables apt-daily.timer apt-daily-upgrade.timer
+systemctl enable jiukong-zram.service jiukong-swap.service earlyoom
+# Live config creates its own autologin. Installed users select openbox by default.
+update-alternatives --set x-session-manager /usr/bin/openbox-session
+im-config -n fcitx5
+# No ssh server is included. No kernel/sysctl security features are disabled.

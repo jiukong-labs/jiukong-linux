@@ -1,0 +1,11 @@
+FROM debian:13
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV JIUKONG_VNC_LISTEN=0.0.0.0
+RUN apt-get -o APT::Update::Error-Mode=any update \
+    && apt-get install -y --no-install-recommends qemu-system-x86 qemu-utils ovmf python3 \
+    && rm -rf /var/lib/apt/lists/*
+WORKDIR /work
+COPY . /work
+RUN mkdir -p /work/dist /work/results
+CMD ["bash", "scripts/test-qemu.sh", "--headless"]

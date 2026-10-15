@@ -1,0 +1,12 @@
+FROM jiukong-linux-check-base:debian13-amd64
+
+RUN apt-get -o APT::Update::Error-Mode=any update \
+    && apt-get install -y --no-install-recommends \
+       debian-archive-keyring xorriso squashfs-tools isolinux syslinux-common \
+       syslinux-utils grub-pc-bin grub-efi-amd64-bin grub-efi-amd64-signed \
+       shim-signed mtools dosfstools rsync git gzip xz-utils zstd file \
+       util-linux bzip2 apt-utils cryptsetup-bin \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY . /work
+CMD ["bash", "./build.sh"]

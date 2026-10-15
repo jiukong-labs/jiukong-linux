@@ -1,0 +1,9 @@
+[Unit]
+Description=JiuKong installed-system SSD swap provisioning
+After=local-fs.target
+ConditionPathExists=!/run/live/medium
+[Service]
+Type=oneshot
+ExecStart=/usr/local/lib/jiukong/scripts/setup-swap.sh
+[Install]
+WantedBy=multi-user.target

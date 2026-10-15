@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=JiuKong Control Center
+Exec=jiukong-control-center
+Icon=computer
+Terminal=false
+Categories=System;

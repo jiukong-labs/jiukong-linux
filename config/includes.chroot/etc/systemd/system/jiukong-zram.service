@@ -1,0 +1,13 @@
+[Unit]
+Description=JiuKong half-RAM compressed swap
+DefaultDependencies=no
+After=systemd-modules-load.service
+Before=swap.target shutdown.target
+Conflicts=shutdown.target
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/lib/jiukong/scripts/zram.sh start
+ExecStop=/usr/local/lib/jiukong/scripts/zram.sh stop
+[Install]
+WantedBy=swap.target

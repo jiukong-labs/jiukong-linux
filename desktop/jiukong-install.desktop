@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=安裝到 SSD：請先閱讀資料刪除警告
+Exec=firefox file:///usr/local/lib/jiukong/docs/install.html
+Icon=computer
+Terminal=false
+Categories=System;

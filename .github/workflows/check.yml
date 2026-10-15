@@ -1,0 +1,29 @@
+name: Source and Debian package checks
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    container: debian:13
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Install validation dependencies
+        run: |
+          sed -i 's/Components: main$/Components: main contrib non-free-firmware/' /etc/apt/sources.list.d/debian.sources
+          apt-get -o APT::Update::Error-Mode=any update
+          apt-get install -y --no-install-recommends python3 python3-tk shellcheck desktop-file-utils libxml2-utils live-build debootstrap
+      - name: Source checks
+        run: |
+          ./scripts/validate.sh
+          desktop-file-validate desktop/*.desktop
+          xmllint --noout desktop/openbox/*.xml
+      - name: Resolve all Debian image packages
+        run: |
+          python3 -c 'from pathlib import Path; import subprocess; p=Path("packages/base.list.chroot").read_text().split(); subprocess.run(["apt-get","-s","--no-install-recommends","install",*p],check=True)'
+      - name: Validate live-build configuration
+        run: |
+          python3 scripts/prepare-build.py .build/config-check
+          cd .build/config-check
+          ../../scripts/configure-live.sh
+# These checks are not BIOS/UEFI boot, install, or performance evidence.

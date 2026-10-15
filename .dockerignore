@@ -1,0 +1,12 @@
+.git
+.build
+dist
+logs
+results
+**/node_modules
+**/__pycache__
+**/*.pyc
+.venv
+*.iso
+*.qcow2
+*.fd

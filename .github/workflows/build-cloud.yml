@@ -1,0 +1,56 @@
+name: Build ISO in GitHub cloud
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: jiukong-cloud-iso
+  cancel-in-progress: false
+jobs:
+  iso:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Make space on this disposable GitHub VM
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          # Only SDKs on GitHub's disposable hosted VM; never run on a user's Mac.
+          [[ ${RUNNER_ENVIRONMENT:-} == github-hosted ]] || { echo 'Requires a GitHub-hosted VM'; exit 1; }
+          sudo rm -rf -- /usr/share/dotnet /usr/local/lib/android /opt/ghc /usr/local/.ghcup
+          df -h .
+          available=$(df -Pk . | awk 'END {print $4}')
+          (( available >= 26214400 )) || { echo 'Need 25 GiB free; this runner has insufficient disk. Use a larger or dedicated runner.'; exit 1; }
+      - name: Validate on Debian 13 amd64
+        run: ./scripts/check-docker.sh
+      - name: Build ISO on native x86-64
+        run: ./scripts/build-docker.sh
+      - name: Keep failed-container diagnostics
+        if: failure()
+        shell: bash
+        run: |
+          mkdir -p logs
+          for id in $(docker ps -aq --filter 'name=^/jiukong-build-'); do
+            if ! docker logs "$id" > "logs/container-$id.log" 2>&1; then
+              echo "::warning::Could not retrieve logs for $id"
+            fi
+          done
+      - name: Downloadable ISO and checksum
+        if: success()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: jiukong-development-iso-${{ github.run_number }}
+          path: dist/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 1
+      - name: Build logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: jiukong-cloud-logs-${{ github.run_number }}
+          path: logs/
+          if-no-files-found: warn
+          retention-days: 7
+# Manual only. Does not create or publish a GitHub Release.

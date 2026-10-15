@@ -1,0 +1,14 @@
+# Executed by openbox-session as the desktop user.
+xsetroot -solid '#1b2631' &
+tint2 &
+pcmanfm --desktop &
+nm-applet &
+dunst &
+xfce4-power-manager &
+light-locker &
+# lxpolkit is installed, with an executable portable across Debian architectures.
+lxpolkit &
+fcitx5 -d &
+if [ -r /run/jiukong-live-password ]; then
+    xfce4-terminal --title='JiuKong Live 密碼及安裝提醒' --command=/usr/local/lib/jiukong/scripts/live-welcome.sh &
+fi

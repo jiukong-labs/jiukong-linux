@@ -1,0 +1,28 @@
+name: Build development ISO (dedicated Debian 13 host)
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: jiukong-iso-builder
+  cancel-in-progress: false
+jobs:
+  iso:
+    # Use an isolated, disposable, trusted runner. Never run fork PR code as root.
+    runs-on: [self-hosted, Linux, X64, jiukong-builder]
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - run: ./scripts/validate.sh
+      - name: Build ISO
+        run: sudo ./build.sh
+      - name: Save build artifacts, no release publication
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: jiukong-development-iso
+          path: |
+            dist/
+            logs/
+          if-no-files-found: warn
+          retention-days: 7

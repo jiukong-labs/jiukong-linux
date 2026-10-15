@@ -1,0 +1,11 @@
+.build/
+dist/
+logs/
+results/
+__pycache__/
+*.pyc
+*.iso
+*.qcow2
+*.fd
+.venv/
+node_modules/

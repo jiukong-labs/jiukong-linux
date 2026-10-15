@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openbox_menu xmlns="http://openbox.org/3.4/menu">
+<menu id="root-menu" label="久空 Linux">
+<item label="久空控制中心"><action name="Execute"><command>jiukong-control-center</command></action></item>
+<item label="終端機"><action name="Execute"><command>xfce4-terminal</command></action></item>
+<item label="檔案"><action name="Execute"><command>pcmanfm</command></action></item>
+<item label="瀏覽器"><action name="Execute"><command>firefox</command></action></item>
+<item label="中文輸入設定"><action name="Execute"><command>fcitx5-configtool</command></action></item>
+<item label="音量"><action name="Execute"><command>pavucontrol</command></action></item>
+<item label="鎖定"><action name="Execute"><command>light-locker-command --lock</command></action></item>
+<item label="登出"><action name="Exit"/></item>
+<item label="重新開機"><action name="Execute"><command>systemctl reboot</command></action></item>
+<item label="關機"><action name="Execute"><command>systemctl poweroff</command></action></item>
+</menu></openbox_menu>
