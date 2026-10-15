@@ -3,6 +3,7 @@ live-boot
 live-config
 live-config-systemd
 systemd-sysv
+systemd-timesyncd
 sudo
 locales
 tzdata

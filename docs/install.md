@@ -6,7 +6,7 @@
 2. 使用 `sha256sum -c 對應.iso.sha256` 驗證映像；macOS 可用 `shasum -a 256 映像.iso` 比對。SHA256 檔須從可信來源取得。
 3. 使用經確認的映像寫入工具把 hybrid ISO 寫入 USB。工具會覆寫 USB 資料，必須人工確認 USB 型號與容量。本專案刻意不提供 `dd /dev/...` 自動寫入命令。
 4. 從電腦韌體選 USB 開機，先試 Live。若 Intel 顯示失敗，可臨時在開機參數加入 `nomodeset` 診斷，這會犧牲加速，不是全機預設。
-5. Live 自動登入 `jiukong`。終端機顯示本次密碼，亦可 `cat /run/jiukong-live-password` 查看。其他使用者不可讀取此檔；重開機會重設。保護好實體 USB 與試用環境。
+5. Live 自動登入 `jiukong`。終端機顯示本次 6 位數字密碼（若開頭是 0，也要輸入），亦可 `cat /run/jiukong-live-password` 查看。其他使用者不可讀取此檔；重開機會重設。保護好實體 USB 與試用環境。
 6. 執行硬體檢查工具，測試顯示、網路、鍵盤、觸控板、音訊、休眠喚醒。`Super+Space` 開控制中心、`Super+Enter` 開終端、`Super+L` 鎖定。Fcitx5 用 Ctrl+Space 切換，預設注音；若無候選窗，用 fcitx5-configtool 檢查 Chewing。
 7. 安裝必須重新開機，從 ISO 選單選 Debian Installer 的 Install／Graphical Install。確認繁體中文、台北時區，建立自己的帳號與強密碼。root 帳號不開放直接登入；第一位使用者由 Debian Installer 配置 sudo。
 8. 選正確 SSD。4 GB RAM 建議 ext4；UEFI 保留或建立 EFI System Partition，Legacy BIOS 依 Installer 提示配置 GRUB。需要加密者可使用 Debian Installer 提供的加密 LVM；必須個別驗收。雙系統請使用手動分割，勿選整顆磁碟。
@@ -18,3 +18,5 @@
 英文介面：在 LightDM 登入畫面選擇 English；若未顯示語言選項，可在使用者 `~/.profile` 加入 `export LANG=en_US.UTF-8` 後重新登入。系統已產生兩種 locale，注音可保留。
 
 需要網路時由 nm-applet 選 Wi-Fi，輸入自己的密碼。SSH server 未預裝；如需遠端管理，應自行安裝、配置金鑰及防火牆規則，勿直接對外開放密碼登入。
+
+連網後由 systemd-timesyncd 自動校時。若安裝工具顯示憑證尚未生效，先以 `timedatectl status` 確認日期時間與同步狀態，再重試安裝。

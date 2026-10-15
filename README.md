@@ -31,7 +31,7 @@ python3 /usr/local/lib/jiukong/scripts/hardware-check.py --json
 jiukong-control-center
 ```
 
-Live 模式自動登入 `jiukong`，每次開機產生臨時密碼並在終端機顯示，用於鎖定與 sudo。安裝時建立自己的使用者與密碼，沒有固定萬用密碼。**安裝到 SSD 的格式化可能刪除所有原有資料。請先備份，從開機選單選 Debian Installer，逐項確認磁碟。**
+Live 模式自動登入 `jiukong`，每次開機產生 6 位數字臨時密碼並在終端機顯示，用於鎖定與 sudo。安裝時建立自己的使用者與密碼，沒有固定萬用密碼。**安裝到 SSD 的格式化可能刪除所有原有資料。請先備份，從開機選單選 Debian Installer，逐項確認磁碟。**
 
 ## 文件
 
