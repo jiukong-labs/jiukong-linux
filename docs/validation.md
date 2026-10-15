@@ -1,6 +1,6 @@
 # 驗證紀錄 — 2026-10-15
 
-目前狀態：**工程原型，未通過發行驗收**。尚未建立 ISO、沒有可提供的 ISO SHA256、沒有 BIOS／UEFI／SSD 安裝成功結果，亦未量測目標桌面 RAM。
+目前狀態：**工程原型，未通過發行驗收**。已完成首次雲端 ISO 建置與建置端 SHA256 比對；尚無 BIOS／UEFI／SSD 安裝成功結果，亦未量測目標桌面 RAM。
 
 ## 已實際執行
 
@@ -8,7 +8,7 @@
 
 ## Docker 後續驗證
 
-操作者後續回報 Mac 幾乎當機，已停止新增本機重負載工作，改準備手動雲端建置流程。嘗試停止本專案建置容器的 Docker stop 命令在 15 秒內未回應，**無法確認容器已停止**；已請操作者正常退出 Docker Desktop。雲端 workflow 已推送並執行首輪，詳見下節；沒有雲端 ISO 產物。
+操作者後續回報 Mac 幾乎當機，已停止新增本機重負載工作，改準備手動雲端建置流程。嘗試停止本專案建置容器的 Docker stop 命令在 15 秒內未回應，**無法確認容器已停止**；已請操作者正常退出 Docker Desktop。雲端 workflow 已推送並執行首輪，詳見下節；第二輪已成功產出 ISO，詳見文末。
 
 - 正常重啟 Docker Desktop 逾時後，以 SIGTERM 正常終止殘留程序，再重新開啟，`/_ping` 已回傳 OK。沒有清除映像、資料卷或重設 Docker。
 - 已實際建立並執行 Debian 13 `linux/amd64` 容器：13 項測試、Debian ShellCheck 0.10.0、desktop-file-validate、XML 語法、全部映像套件的 APT 相依模擬、實際 `lb config` 均通過。
@@ -31,20 +31,20 @@
 - benchmark.sh --seconds 1 在主機完成有限 CPU、128 MiB 記憶體複製與暫存檔 I/O。僅驗證測試工具可執行，不作為目標工作站效能數據。
 - build.sh 在 macOS 明確失敗；test-qemu.sh 回報缺少 qemu-system-x86_64；install-all.sh 拒絕非 Linux amd64。三者均未執行安裝／建置或改寫主機系統設定。
 
-本機原始輸出位於未追蹤的 `results/source-checks.log`、`results/host-hardware.json`、`results/host-benchmark.json`。這些不是可發行產物。雲端來源檢查已執行，完整 ISO 建置尚未通過。
+本機原始輸出位於未追蹤的 `results/source-checks.log`、`results/host-hardware.json`、`results/host-benchmark.json`。這些不是可發行產物。雲端來源檢查已執行，完整 ISO 建置已於第二輪通過；開機驗收尚未進行。
 
 ## 八階段狀態
 
 | 階段 | 已提供實作 | 整合驗證狀態 |
 | --- | --- | --- |
-| 1 Minimal＋Openbox ISO | live-build、官方核心、BIOS／UEFI、Debian live installer | lb config 已通過；實際建置輸出停滯、Docker API 逾時；尚未開機 |
+| 1 Minimal＋Openbox ISO | live-build、官方核心、BIOS／UEFI、Debian live installer | lb config 已通過；雲端 ISO 建置通過；尚未開機 |
 | 2 繁中桌面與安全更新 | locale、Fcitx5、網路／音訊／鎖定、APT security、nftables | APT 相依模擬已通過；桌面與服務未測 |
 | 3 記憶體 | zram 50%、可用算法檢查、zswap 排除、ext4 swapfile、earlyoom | 尚未在 Linux 啟用或壓力測試 |
 | 4 開發工具 | 官方 VS Code／Claude Code APT、Codex npm lock、IDE 設定 | 設定與 npm macOS 簽章已測；Linux 未測 |
 | 5 桌面 AI 工具 | 官方 ChatGPT／Claude Desktop signed APT 安裝器 | 官方流程與 key 查核；未安裝／啟動 |
 | 6 控制中心 | Python Tkinter、非 root、授權操作交由終端機 sudo | Python 語法已測；Debian GUI 未測 |
 | 7 驗收 | QEMU Live／install／disk、硬體報告、benchmark、A–Q 報告 | 測試工具部分已測；目標驗收未測 |
-| 8 發行 | 成功建置後的 SHA256／日誌／套件版本、手冊、手動 build workflow | 尚無 ISO／Release；未執行發行授權審查 |
+| 8 發行 | 成功建置後的 SHA256／日誌／套件版本、手冊、手動 build workflow | 已有開發 ISO／SHA256；尚無 Release，未執行發行授權審查 |
 
 ## A–Q 目前結果
 
@@ -55,3 +55,9 @@ A–Q **全部尚未在目標機或 QEMU 驗證**。沒有「模擬成功」或�
 ## 首次 GitHub 雲端建置
 
 [Run 38671537652](https://github.com/jiukong-labs/jiukong-linux/actions/runs/38671537652)，commit `e3c52b6`：來源測試、APT 相依模擬、lb config 通過；Debian 基礎系統成功安裝，chroot 階段掛載 devpts／proc 失敗，exit 32。這是建置失敗，artifact 僅為日誌，沒有 ISO。後續將較高掛載權限限制於 GitHub 一次性 VM 的專用參數，等待重新建置驗證；不在 Mac 重新執行 Docker。
+
+## 第二次 GitHub 雲端建置成功
+
+[Run 38678354202](https://github.com/jiukong-labs/jiukong-linux/actions/runs/38678354202)，commit `563781a`，2026-10-15：Debian 13 來源／套件驗證、完整 live-build、產物複製、建置端 SHA256 比對與 artifact 上傳全部通過。作業耗時約 13 分鐘。
+
+產物：`jiukong-0.1.0-dev-20261015T035240Z-amd64.iso`，連同 SHA256／套件清單／建置資訊保存在 `jiukong-development-iso-2`（artifact ID `11947628314`，ZIP 2,072,920,652 bytes，保留一天）。日誌為 `jiukong-cloud-logs-2`，ID `11947673199`。本次沒有在 Mac 下載或啟動 ISO。下載端 SHA256 尚待驗證；A–Q 開機、桌面、效能與安裝驗收仍全部尚未測試，不能因 ISO 建置成功改列通過。未建立 GitHub Release。

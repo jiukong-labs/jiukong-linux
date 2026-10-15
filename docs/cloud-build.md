@@ -4,7 +4,7 @@
 
 ## GitHub Actions
 
-已提供 `.github/workflows/build-cloud.yml`。第一次雲端執行通過來源／套件／配置檢查，但建置在掛載 `/proc` 時失敗（exit 32），尚未產出 ISO。這個 workflow 使用 GitHub 提供的 Ubuntu x64 VM，在其中以 Debian 13 amd64 Docker 建置；不是把目標系統改成 Ubuntu，也不需要 Mac 執行 Docker。
+已提供 `.github/workflows/build-cloud.yml`。第一次雲端執行通過來源／套件／配置檢查，但建置在掛載 `/proc` 時失敗（exit 32），第二輪已成功產出開發 ISO（run `38678354202`）；開機／安裝尚未驗收。這個 workflow 使用 GitHub 提供的 Ubuntu x64 VM，在其中以 Debian 13 amd64 Docker 建置；不是把目標系統改成 Ubuntu，也不需要 Mac 執行 Docker。
 
 1. 將原始碼與 workflow 放到正確的 GitHub 儲存庫。預定目標是 `jiukong-labs/jiukong-linux`；目前本地 origin 仍是 `cloudgate-it/jiukong-linux`，另加 `jiukong` remote 上傳至預定目標，不變更原有 origin。
 2. 在 GitHub 的 Actions 選 **Build ISO in GitHub cloud**，按 **Run workflow**。它只會手動啟動，不會每次修改都重建 ISO。
