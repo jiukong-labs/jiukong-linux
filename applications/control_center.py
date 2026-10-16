@@ -30,6 +30,14 @@ class Center:
         outer = ttk.Frame(window, padding=14)
         outer.pack(fill="both", expand=True)
         ttk.Label(outer, text="久空 AI 開發工作站", font=("sans", 18)).pack(anchor="w")
+        navigation = ttk.Frame(outer)
+        navigation.pack(fill="x", pady=(8, 0))
+        ttk.Button(navigation, text="應用程式（已安裝程式）",
+                   command=lambda: self.launch(["xfce4-appfinder"])).pack(side="left", padx=2)
+        ttk.Button(navigation, text="Firefox 瀏覽器",
+                   command=lambda: self.launch(["firefox-esr"])).pack(side="left", padx=2)
+        ttk.Button(navigation, text="藍牙設備",
+                   command=lambda: self.launch(["blueman-manager"])).pack(side="left", padx=2)
         self.state_text = tk.Text(outer, height=23, wrap="word", state="disabled")
         self.state_text.pack(fill="both", expand=True, pady=10)
         tools = ttk.Frame(outer)

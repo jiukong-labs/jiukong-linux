@@ -3,6 +3,7 @@
   <theme><name>Clearlooks</name><titleLayout>NLIMC</titleLayout></theme>
   <desktops><number>2</number><firstdesk>1</firstdesk></desktops>
   <keyboard>
+    <keybind key="W-a"><action name="Execute"><command>xfce4-appfinder</command></action></keybind>
     <keybind key="A-F4"><action name="Close"/></keybind>
     <keybind key="A-Tab"><action name="NextWindow"/></keybind>
     <keybind key="W-Return"><action name="Execute"><command>xfce4-terminal</command></action></keybind>

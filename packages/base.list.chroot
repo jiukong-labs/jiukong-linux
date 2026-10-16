@@ -16,6 +16,8 @@ apt-listchanges
 nftables
 network-manager
 network-manager-gnome
+bluez
+blueman
 wpasupplicant
 wireless-regdb
 firmware-iwlwifi
@@ -37,6 +39,7 @@ lightdm-gtk-greeter
 tint2
 pcmanfm
 xfce4-terminal
+xfce4-appfinder
 xfce4-power-manager
 dunst
 libnotify-bin
@@ -48,6 +51,7 @@ gvfs
 udisks2
 upower
 pipewire-audio
+libspa-0.2-bluetooth
 wireplumber
 alsa-utils
 pavucontrol

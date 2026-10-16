@@ -1,8 +1,12 @@
-# Panel with window buttons, notification area and clock.
-panel_items = TSC
+# Panel with application launcher, window buttons, notification area and clock.
+panel_items = LTSC
 panel_position = bottom center horizontal
 panel_size = 100% 30
 panel_background_id = 0
+launcher_padding = 6 2 4
+launcher_icon_size = 22
+launcher_item_app = /usr/share/applications/jiukong-applications.desktop
+launcher_item_app = /usr/share/applications/firefox-esr.desktop
 taskbar_mode = single_desktop
 task_icon = 1
 task_text = 1

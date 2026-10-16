@@ -3,6 +3,7 @@ xsetroot -solid '#1b2631' &
 tint2 &
 pcmanfm --desktop &
 nm-applet &
+blueman-applet &
 dunst &
 xfce4-power-manager &
 light-locker &

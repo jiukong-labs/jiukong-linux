@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <openbox_menu xmlns="http://openbox.org/3.4/menu">
 <menu id="root-menu" label="久空 Linux">
+<item label="應用程式（已安裝程式）"><action name="Execute"><command>xfce4-appfinder</command></action></item>
 <item label="久空控制中心"><action name="Execute"><command>jiukong-control-center</command></action></item>
 <item label="終端機"><action name="Execute"><command>xfce4-terminal</command></action></item>
 <item label="檔案"><action name="Execute"><command>pcmanfm</command></action></item>
-<item label="瀏覽器"><action name="Execute"><command>firefox</command></action></item>
+<item label="Firefox 瀏覽器"><action name="Execute"><command>firefox-esr</command></action></item>
+<item label="藍牙設備"><action name="Execute"><command>blueman-manager</command></action></item>
 <item label="中文輸入設定"><action name="Execute"><command>fcitx5-configtool</command></action></item>
 <item label="音量"><action name="Execute"><command>pavucontrol</command></action></item>
 <item label="鎖定"><action name="Execute"><command>light-locker-command --lock</command></action></item>

@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Applications
+Name[zh_TW]=應用程式
+Comment=Browse, search and launch installed applications
+Comment[zh_TW]=查看、搜尋並開啟已安裝的應用程式
+Exec=xfce4-appfinder
+Icon=applications-other
+Terminal=false
+Categories=Utility;

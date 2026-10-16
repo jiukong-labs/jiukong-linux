@@ -7,6 +7,7 @@ ln -sf /usr/share/zoneinfo/Asia/Taipei /etc/localtime
 printf 'Asia/Taipei\n' > /etc/timezone
 systemctl enable NetworkManager lightdm nftables apt-daily.timer apt-daily-upgrade.timer
 systemctl enable systemd-timesyncd.service
+systemctl enable bluetooth.service
 systemctl enable jiukong-zram.service jiukong-swap.service earlyoom
 # Live config creates its own autologin. Installed users select openbox by default.
 update-alternatives --set x-session-manager /usr/bin/openbox-session
